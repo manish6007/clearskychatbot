@@ -1,0 +1,263 @@
+[
+  {
+    "content": "# customers\n\nCustomer information table containing customer profiles and contact details.\n",
+    "metadata": {
+      "source": "D:\\antigravity\\clearskychatbot\\local_setup\\schema_docs\\customers.md",
+      "table": "customers",
+      "section_index": 0,
+      "type": "schema"
+    }
+  },
+  {
+    "content": "## Table Details\n\n- **Database**: athena_db\n- **Catalog**: AwsDataCatalog\n- **Location**: s3://athena-datasource-cg/customers1\n",
+    "metadata": {
+      "source": "D:\\antigravity\\clearskychatbot\\local_setup\\schema_docs\\customers.md",
+      "table": "customers",
+      "section_index": 1,
+      "type": "schema"
+    }
+  },
+  {
+    "content": "## Columns\n\n| Column | Type | Description |\n|--------|------|-------------|\n| customerid | string | Unique identifier for the customer (Primary Key) |\n| firstname | string | Customer's first name |\n| lastname | string | Customer's last name |\n| email | string | Customer's email address |\n| phonenumber | string | Customer's phone number |\n",
+    "metadata": {
+      "source": "D:\\antigravity\\clearskychatbot\\local_setup\\schema_docs\\customers.md",
+      "table": "customers",
+      "section_index": 2,
+      "type": "schema"
+    }
+  },
+  {
+    "content": "## Common Queries\n\n- Get customer by ID: `SELECT * FROM customers WHERE customerid = 'xxx'`\n- Search by name: `SELECT * FROM customers WHERE firstname LIKE '%name%' OR lastname LIKE '%name%'`\n- Get all customers: `SELECT * FROM customers`\n",
+    "metadata": {
+      "source": "D:\\antigravity\\clearskychatbot\\local_setup\\schema_docs\\customers.md",
+      "table": "customers",
+      "section_index": 3,
+      "type": "schema"
+    }
+  },
+  {
+    "content": "## Relationships\n\n- **orders**: customers.customerid \u2192 orders.customerid (One to Many)\n- A customer can have multiple orders\n",
+    "metadata": {
+      "source": "D:\\antigravity\\clearskychatbot\\local_setup\\schema_docs\\customers.md",
+      "table": "customers",
+      "section_index": 4,
+      "type": "schema"
+    }
+  },
+  {
+    "content": "## Business Context\n\nThe customers table stores all registered customer information. It is the primary reference for customer identity and is linked to orders through the customerid field.\n",
+    "metadata": {
+      "source": "D:\\antigravity\\clearskychatbot\\local_setup\\schema_docs\\customers.md",
+      "table": "customers",
+      "section_index": 5,
+      "type": "schema"
+    }
+  },
+  {
+    "content": "# orders\n\nOrder transactions table containing order records and their status.\n",
+    "metadata": {
+      "source": "D:\\antigravity\\clearskychatbot\\local_setup\\schema_docs\\orders.md",
+      "table": "orders",
+      "section_index": 0,
+      "type": "schema"
+    }
+  },
+  {
+    "content": "## Table Details\n\n- **Database**: athena_db\n- **Catalog**: AwsDataCatalog\n- **Location**: s3://athena-datasource-cg/orders\n",
+    "metadata": {
+      "source": "D:\\antigravity\\clearskychatbot\\local_setup\\schema_docs\\orders.md",
+      "table": "orders",
+      "section_index": 1,
+      "type": "schema"
+    }
+  },
+  {
+    "content": "## Columns\n\n| Column | Type | Description |\n|--------|------|-------------|\n| orderid | string | Unique identifier for the order (Primary Key) |\n| customerid | string | Reference to the customer who placed the order (Foreign Key \u2192 customers.customerid) |\n| orderdate | string | Date when the order was placed (format: YYYY-MM-DD) |\n| orderamount | string | Total amount of the order in currency |\n| orderstatus | string | Current status of the order (e.g., 'Pending', 'Shipped', 'Delivered', 'Cancelled') |\n",
+    "metadata": {
+      "source": "D:\\antigravity\\clearskychatbot\\local_setup\\schema_docs\\orders.md",
+      "table": "orders",
+      "section_index": 2,
+      "type": "schema"
+    }
+  },
+  {
+    "content": "## Common Queries\n\n- Get order by ID: `SELECT * FROM orders WHERE orderid = 'xxx'`\n- Get orders by customer: `SELECT * FROM orders WHERE customerid = 'xxx'`\n- Get orders by date range: `SELECT * FROM orders WHERE orderdate BETWEEN 'start' AND 'end'`\n- Get orders by status: `SELECT * FROM orders WHERE orderstatus = 'Shipped'`\n- Total orders per day: `SELECT orderdate, COUNT(*) as order_count, SUM(CAST(orderamount AS DOUBLE)) as total_amount FROM orders GROUP BY orderdate`\n",
+    "metadata": {
+      "source": "D:\\antigravity\\clearskychatbot\\local_setup\\schema_docs\\orders.md",
+      "table": "orders",
+      "section_index": 3,
+      "type": "schema"
+    }
+  },
+  {
+    "content": "## Relationships\n\n- **customers**: orders.customerid \u2192 customers.customerid (Many to One)\n- **order_items**: orders.orderid \u2192 order_items.orderid (One to Many)\n- Each order belongs to one customer and can contain multiple order items\n",
+    "metadata": {
+      "source": "D:\\antigravity\\clearskychatbot\\local_setup\\schema_docs\\orders.md",
+      "table": "orders",
+      "section_index": 4,
+      "type": "schema"
+    }
+  },
+  {
+    "content": "## Business Context\n\nThe orders table is the central transaction table. It tracks all customer orders with their date, total amount, and current status. Use orderdate for time-based analysis and orderstatus for fulfillment tracking. Join with customers for customer details and order_items for line-item details.\n",
+    "metadata": {
+      "source": "D:\\antigravity\\clearskychatbot\\local_setup\\schema_docs\\orders.md",
+      "table": "orders",
+      "section_index": 5,
+      "type": "schema"
+    }
+  },
+  {
+    "content": "# order_items\n\nOrder line items table containing individual products within each order.\n",
+    "metadata": {
+      "source": "D:\\antigravity\\clearskychatbot\\local_setup\\schema_docs\\order_items.md",
+      "table": "order_items",
+      "section_index": 0,
+      "type": "schema"
+    }
+  },
+  {
+    "content": "## Table Details\n\n- **Database**: athena_db\n- **Catalog**: AwsDataCatalog\n- **Location**: s3://athena-datasource-cg/order_items\n",
+    "metadata": {
+      "source": "D:\\antigravity\\clearskychatbot\\local_setup\\schema_docs\\order_items.md",
+      "table": "order_items",
+      "section_index": 1,
+      "type": "schema"
+    }
+  },
+  {
+    "content": "## Columns\n\n| Column | Type | Description |\n|--------|------|-------------|\n| orderitemid | string | Unique identifier for the order item (Primary Key) |\n| orderid | string | Reference to the parent order (Foreign Key \u2192 orders.orderid) |\n| productid | string | Reference to the product (Foreign Key \u2192 products.productid) |\n| quantity | string | Number of units ordered (should be cast to INT for calculations) |\n| unitprice | string | Price per unit at time of order (should be cast to DOUBLE for calculations) |\n",
+    "metadata": {
+      "source": "D:\\antigravity\\clearskychatbot\\local_setup\\schema_docs\\order_items.md",
+      "table": "order_items",
+      "section_index": 2,
+      "type": "schema"
+    }
+  },
+  {
+    "content": "## Common Queries\n\n- Get items for an order: `SELECT * FROM order_items WHERE orderid = 'xxx'`\n- Get item with product details: `SELECT oi.*, p.productname, p.category FROM order_items oi JOIN products p ON oi.productid = p.productid WHERE oi.orderid = 'xxx'`\n- Calculate line total: `SELECT orderitemid, CAST(quantity AS INT) * CAST(unitprice AS DOUBLE) as line_total FROM order_items`\n- Top selling products: `SELECT productid, SUM(CAST(quantity AS INT)) as total_sold FROM order_items GROUP BY productid ORDER BY total_sold DESC`\n",
+    "metadata": {
+      "source": "D:\\antigravity\\clearskychatbot\\local_setup\\schema_docs\\order_items.md",
+      "table": "order_items",
+      "section_index": 3,
+      "type": "schema"
+    }
+  },
+  {
+    "content": "## Relationships\n\n- **orders**: order_items.orderid \u2192 orders.orderid (Many to One)\n- **products**: order_items.productid \u2192 products.productid (Many to One)\n- Each order item belongs to one order and references one product\n",
+    "metadata": {
+      "source": "D:\\antigravity\\clearskychatbot\\local_setup\\schema_docs\\order_items.md",
+      "table": "order_items",
+      "section_index": 4,
+      "type": "schema"
+    }
+  },
+  {
+    "content": "## Business Context\n\nThe order_items table stores the individual line items for each order. It links orders to products and captures the quantity and price at the time of purchase. Use this table for product sales analysis, revenue calculations, and basket analysis. Remember to cast quantity and unitprice to numeric types for calculations.\n",
+    "metadata": {
+      "source": "D:\\antigravity\\clearskychatbot\\local_setup\\schema_docs\\order_items.md",
+      "table": "order_items",
+      "section_index": 5,
+      "type": "schema"
+    }
+  },
+  {
+    "content": "# products\n\nProduct catalog table containing product information and inventory.\n",
+    "metadata": {
+      "source": "D:\\antigravity\\clearskychatbot\\local_setup\\schema_docs\\products.md",
+      "table": "products",
+      "section_index": 0,
+      "type": "schema"
+    }
+  },
+  {
+    "content": "## Table Details\n\n- **Database**: athena_db\n- **Catalog**: AwsDataCatalog\n- **Location**: s3://athena-datasource-cg/products\n",
+    "metadata": {
+      "source": "D:\\antigravity\\clearskychatbot\\local_setup\\schema_docs\\products.md",
+      "table": "products",
+      "section_index": 1,
+      "type": "schema"
+    }
+  },
+  {
+    "content": "## Columns\n\n| Column | Type | Description |\n|--------|------|-------------|\n| productid | string | Unique identifier for the product (Primary Key) |\n| productname | string | Name of the product |\n| category | string | Product category (e.g., 'Electronics', 'Clothing', 'Home', etc.) |\n| price | string | Current price of the product (should be cast to DOUBLE for calculations) |\n| stockquantity | string | Current inventory level (should be cast to INT for calculations) |\n",
+    "metadata": {
+      "source": "D:\\antigravity\\clearskychatbot\\local_setup\\schema_docs\\products.md",
+      "table": "products",
+      "section_index": 2,
+      "type": "schema"
+    }
+  },
+  {
+    "content": "## Common Queries\n\n- Get product by ID: `SELECT * FROM products WHERE productid = 'xxx'`\n- Get products by category: `SELECT * FROM products WHERE category = 'Electronics'`\n- Get low stock products: `SELECT * FROM products WHERE CAST(stockquantity AS INT) < 10`\n- Products by price range: `SELECT * FROM products WHERE CAST(price AS DOUBLE) BETWEEN 10 AND 100`\n- Category summary: `SELECT category, COUNT(*) as product_count, AVG(CAST(price AS DOUBLE)) as avg_price FROM products GROUP BY category`\n",
+    "metadata": {
+      "source": "D:\\antigravity\\clearskychatbot\\local_setup\\schema_docs\\products.md",
+      "table": "products",
+      "section_index": 3,
+      "type": "schema"
+    }
+  },
+  {
+    "content": "## Relationships\n\n- **order_items**: products.productid \u2192 order_items.productid (One to Many)\n- A product can appear in multiple order items across different orders\n",
+    "metadata": {
+      "source": "D:\\antigravity\\clearskychatbot\\local_setup\\schema_docs\\products.md",
+      "table": "products",
+      "section_index": 4,
+      "type": "schema"
+    }
+  },
+  {
+    "content": "## Business Context\n\nThe products table is the product master data. It contains the product catalog with current pricing and inventory levels. Use this for product lookups, category analysis, and inventory management. Join with order_items to analyze product sales performance.\n",
+    "metadata": {
+      "source": "D:\\antigravity\\clearskychatbot\\local_setup\\schema_docs\\products.md",
+      "table": "products",
+      "section_index": 5,
+      "type": "schema"
+    }
+  },
+  {
+    "content": "# Schema Overview\n\nE-commerce database with customer orders and product catalog.\n",
+    "metadata": {
+      "source": "D:\\antigravity\\clearskychatbot\\local_setup\\schema_docs\\schema_overview.md",
+      "table": "schema_overview",
+      "section_index": 0,
+      "type": "schema"
+    }
+  },
+  {
+    "content": "## Tables\n\n### customers\nCustomer profiles and contact information.\n- customerid (PK), firstname, lastname, email, phonenumber\n\n### orders\nOrder transactions and status tracking.\n- orderid (PK), customerid (FK \u2192 customers), orderdate, orderamount, orderstatus\n\n### order_items\nLine items within each order.\n- orderitemid (PK), orderid (FK \u2192 orders), productid (FK \u2192 products), quantity, unitprice\n\n### products\nProduct catalog with pricing and inventory.\n- productid (PK), productname, category, price, stockquantity\n",
+    "metadata": {
+      "source": "D:\\antigravity\\clearskychatbot\\local_setup\\schema_docs\\schema_overview.md",
+      "table": "schema_overview",
+      "section_index": 1,
+      "type": "schema"
+    }
+  },
+  {
+    "content": "## Relationships\n\n```\ncustomers (1) \u2500\u2500\u2500\u2500 (N) orders (1) \u2500\u2500\u2500\u2500 (N) order_items (N) \u2500\u2500\u2500\u2500 (1) products\n```\n",
+    "metadata": {
+      "source": "D:\\antigravity\\clearskychatbot\\local_setup\\schema_docs\\schema_overview.md",
+      "table": "schema_overview",
+      "section_index": 2,
+      "type": "schema"
+    }
+  },
+  {
+    "content": "## Common Analysis Patterns\n\n### Sales Analysis\n```sql\nSELECT \n    p.category,\n    COUNT(DISTINCT o.orderid) as order_count,\n    SUM(CAST(oi.quantity AS INT)) as units_sold,\n    SUM(CAST(oi.quantity AS INT) * CAST(oi.unitprice AS DOUBLE)) as revenue\nFROM orders o\nJOIN order_items oi ON o.orderid = oi.orderid\nJOIN products p ON oi.productid = p.productid\nGROUP BY p.category\n```\n\n### Customer Orders\n```sql\nSELECT \n    c.firstname, c.lastname, c.email,\n    COUNT(o.orderid) as total_orders,\n    SUM(CAST(o.orderamount AS DOUBLE)) as total_spent\nFROM customers c\nLEFT JOIN orders o ON c.customerid = o.customerid\nGROUP BY c.customerid, c.firstname, c.lastname, c.email\n```\n\n### Order Details\n```sql\nSELECT \n    o.orderid, o.orderdate, o.orderstatus,\n    c.firstname, c.lastname,\n    p.productname, oi.quantity, oi.unitprice\nFROM orders o\nJOIN customers c ON o.customerid = c.customerid\nJOIN order_items oi ON o.orderid = oi.orderid\nJOIN products p ON oi.productid = p.productid\n```\n",
+    "metadata": {
+      "source": "D:\\antigravity\\clearskychatbot\\local_setup\\schema_docs\\schema_overview.md",
+      "table": "schema_overview",
+      "section_index": 3,
+      "type": "schema"
+    }
+  },
+  {
+    "content": "## Important Notes\n\n- All columns are STRING type in Athena - cast to appropriate types for calculations\n- Use CAST(column AS INT) for integers\n- Use CAST(column AS DOUBLE) for decimals\n- Date format in orderdate is typically YYYY-MM-DD\n",
+    "metadata": {
+      "source": "D:\\antigravity\\clearskychatbot\\local_setup\\schema_docs\\schema_overview.md",
+      "table": "schema_overview",
+      "section_index": 4,
+      "type": "schema"
+    }
+  }
+]
