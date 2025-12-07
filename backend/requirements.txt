@@ -14,7 +14,7 @@ boto3==1.34.25
 botocore==1.34.25
 
 # LlamaIndex for LLM orchestration
-llama-index==0.10.12
+llama-index==0.13.0
 llama-index-llms-bedrock==0.1.3
 llama-index-embeddings-bedrock==0.1.3
 
