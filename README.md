@@ -322,7 +322,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 <div align="center">
 
-**Built with ❤️ by [Manish Kumar](https://github.com/manish6007)**
+**Built with ❤️ by [Manish Shrivastava](https://github.com/manish6007)**
 
 ⭐ Star this repo if you find it useful!
 
