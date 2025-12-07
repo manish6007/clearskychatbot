@@ -1,11 +1,9 @@
-/** ChatContainer component with agent thinking display */
+/** ChatContainer component with prominent ClearSky logo */
 
 import { useRef, useEffect } from 'react';
 import { ChatInput } from './ChatInput';
 import { ChatMessage } from './ChatMessage';
 import { ThinkingIndicator } from './ThinkingIndicator';
-import { Card } from '../common';
-import { Sparkles } from 'lucide-react';
 import type { ChatMessage as ChatMessageType } from '../../types';
 import type { AgentStep } from '../../hooks/useChat';
 
@@ -28,36 +26,30 @@ export function ChatContainer({ messages, loading, thinkingSteps, onSubmit }: Ch
             {/* Messages area */}
             <div className="flex-1 overflow-y-auto p-6 space-y-6">
                 {messages.length === 0 && !loading ? (
-                    <div className="h-full flex items-center justify-center">
-                        <Card className="max-w-md text-center p-8">
-                            <div className="w-16 h-16 rounded-full bg-gradient-to-br from-primary-400 to-accent-500 mx-auto flex items-center justify-center mb-4">
-                                <Sparkles className="h-8 w-8 text-white" />
-                            </div>
-                            <h2 className="text-xl font-semibold text-surface-100 mb-2">
-                                Ask About Your Data
-                            </h2>
-                            <p className="text-surface-400 text-sm mb-6">
-                                Ask questions in natural language. The AI agent will analyze your schema, generate SQL, and self-correct if needed.
+                    <div className="h-full flex flex-col items-center justify-center">
+                        {/* Prominent ClearSky Logo */}
+                        <div className="mb-8 text-center">
+                            <img
+                                src="/clearsky-logo.png"
+                                alt="ClearSky"
+                                className="h-32 w-32 mx-auto mb-6 rounded-2xl shadow-2xl shadow-primary-500/20"
+                            />
+                            <h1 className="text-4xl font-bold gradient-text mb-3">
+                                ClearSky
+                            </h1>
+                            <p className="text-xl text-surface-300 mb-2">
+                                Text-to-SQL Assistant
                             </p>
-                            <div className="space-y-2 text-left">
-                                <p className="text-xs font-medium text-surface-500 uppercase tracking-wide">
-                                    Try asking:
-                                </p>
-                                {[
-                                    "Show all customers",
-                                    "Show total order amount by customer",
-                                    "What products have low stock?",
-                                ].map((example, i) => (
-                                    <button
-                                        key={i}
-                                        onClick={() => onSubmit(example)}
-                                        className="w-full text-left text-sm px-3 py-2 rounded-lg bg-surface-800/50 text-surface-300 hover:bg-surface-700/50 hover:text-surface-100 transition-smooth"
-                                    >
-                                        "{example}"
-                                    </button>
-                                ))}
-                            </div>
-                        </Card>
+                            <p className="text-surface-400 text-sm max-w-md mx-auto">
+                                Ask questions in natural language. The AI agent will analyze your schema,
+                                generate SQL, and self-correct if needed.
+                            </p>
+                        </div>
+
+                        {/* Subtle hint */}
+                        <div className="text-center text-surface-500 text-sm">
+                            <p>💡 Try sample questions from the sidebar or type your own below</p>
+                        </div>
                     </div>
                 ) : (
                     <>

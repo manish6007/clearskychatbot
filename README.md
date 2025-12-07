@@ -95,6 +95,13 @@ When you ask a question, watch the AI agent think in real-time:
 
 ---
 
+### Light Theme Support
+*Fully adaptive UI with system preference detection*
+
+![Light Theme](docs/screenshots/10_light_theme.png)
+
+---
+
 ### Schema Explorer
 *Browse database schema with table and column details*
 

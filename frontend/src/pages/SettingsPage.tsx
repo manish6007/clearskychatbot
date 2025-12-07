@@ -2,9 +2,10 @@
 
 import { useState } from 'react';
 import { Card, Button } from '../components/common';
+import { useTheme } from '../contexts';
 import {
     Settings, Database, Palette, Bell, Shield,
-    ChevronRight, Moon, Sun, Monitor, Save, RefreshCw
+    ChevronRight, Moon, Sun, Monitor, Save, RefreshCw, Check
 } from 'lucide-react';
 
 interface SettingSection {
@@ -24,10 +25,16 @@ const settingSections: SettingSection[] = [
 
 export function SettingsPage() {
     const [activeSection, setActiveSection] = useState('general');
-    const [theme, setTheme] = useState<'dark' | 'light' | 'system'>('dark');
+    const { theme, setTheme, resolvedTheme } = useTheme();
     const [maxRows, setMaxRows] = useState(1000);
     const [enableCharts, setEnableCharts] = useState(true);
     const [enableDebug, setEnableDebug] = useState(true);
+    const [saved, setSaved] = useState(false);
+
+    const handleSave = () => {
+        setSaved(true);
+        setTimeout(() => setSaved(false), 2000);
+    };
 
     const renderSectionContent = () => {
         switch (activeSection) {
@@ -142,6 +149,9 @@ export function SettingsPage() {
                             <label className="block text-sm font-medium text-surface-200 mb-3">
                                 Theme
                             </label>
+                            <p className="text-xs text-surface-400 mb-4">
+                                Current: <span className="text-primary-400 font-medium">{resolvedTheme}</span>
+                            </p>
                             <div className="grid grid-cols-3 gap-3">
                                 {[
                                     { id: 'dark', label: 'Dark', icon: Moon },
@@ -149,15 +159,21 @@ export function SettingsPage() {
                                     { id: 'system', label: 'System', icon: Monitor },
                                 ].map((option) => {
                                     const Icon = option.icon;
+                                    const isActive = theme === option.id;
                                     return (
                                         <button
                                             key={option.id}
-                                            onClick={() => setTheme(option.id as typeof theme)}
-                                            className={`flex flex-col items-center gap-2 p-4 rounded-lg border transition-all ${theme === option.id
+                                            onClick={() => setTheme(option.id as 'dark' | 'light' | 'system')}
+                                            className={`relative flex flex-col items-center gap-2 p-4 rounded-lg border transition-all ${isActive
                                                     ? 'border-primary-500 bg-primary-500/10 text-primary-400'
                                                     : 'border-surface-600 bg-dark-700 text-surface-300 hover:border-surface-500'
                                                 }`}
                                         >
+                                            {isActive && (
+                                                <div className="absolute top-2 right-2">
+                                                    <Check className="h-4 w-4 text-primary-400" />
+                                                </div>
+                                            )}
                                             <Icon className="h-6 w-6" />
                                             <span className="text-sm">{option.label}</span>
                                         </button>
@@ -174,7 +190,7 @@ export function SettingsPage() {
                                 {['#3B82F6', '#10B981', '#8B5CF6', '#F59E0B', '#EF4444', '#EC4899'].map((color) => (
                                     <button
                                         key={color}
-                                        className="w-8 h-8 rounded-full border-2 border-white/20 hover:border-white/50 transition-colors"
+                                        className="w-8 h-8 rounded-full border-2 border-white/20 hover:border-white/50 transition-colors hover:scale-110"
                                         style={{ backgroundColor: color }}
                                     />
                                 ))}
@@ -283,9 +299,18 @@ export function SettingsPage() {
 
                     <div className="mt-8 pt-6 border-t border-surface-700 flex justify-end gap-3">
                         <Button variant="secondary">Cancel</Button>
-                        <Button className="flex items-center gap-2">
-                            <Save className="h-4 w-4" />
-                            Save Changes
+                        <Button onClick={handleSave} className="flex items-center gap-2">
+                            {saved ? (
+                                <>
+                                    <Check className="h-4 w-4" />
+                                    Saved!
+                                </>
+                            ) : (
+                                <>
+                                    <Save className="h-4 w-4" />
+                                    Save Changes
+                                </>
+                            )}
                         </Button>
                     </div>
                 </Card>
