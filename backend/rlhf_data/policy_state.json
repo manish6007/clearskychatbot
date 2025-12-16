@@ -1,0 +1,89 @@
+{
+  "hints": [
+    {
+      "id": "bdb955a6-df3e-4c3f-9717-105efd7671c7",
+      "hint_type": "prefer",
+      "description": "Pattern 'CAST' works well with tables: products",
+      "weight": 0.5,
+      "tables": [
+        "products"
+      ],
+      "pattern": "CAST",
+      "source_feedback_count": 1,
+      "created_at": "2025-12-16T07:52:24.584304",
+      "updated_at": "2025-12-16T07:52:24.584304"
+    },
+    {
+      "id": "3970dabb-e34b-4a81-8d84-46db9d29b433",
+      "hint_type": "prefer",
+      "description": "Pattern 'GROUP BY' works well with tables: products, order_items",
+      "weight": 0.5,
+      "tables": [
+        "products",
+        "order_items"
+      ],
+      "pattern": "GROUP BY",
+      "source_feedback_count": 1,
+      "created_at": "2025-12-16T08:09:06.100337",
+      "updated_at": "2025-12-16T08:09:06.100337"
+    },
+    {
+      "id": "e99a22bb-ff87-4318-a735-ec928c0bb443",
+      "hint_type": "prefer",
+      "description": "Pattern 'JOIN' works well with tables: products, order_items",
+      "weight": 0.5,
+      "tables": [
+        "products",
+        "order_items"
+      ],
+      "pattern": "JOIN",
+      "source_feedback_count": 1,
+      "created_at": "2025-12-16T08:09:06.103775",
+      "updated_at": "2025-12-16T08:09:06.103775"
+    },
+    {
+      "id": "805f77ca-3b36-4b66-b7c0-012bf8828de3",
+      "hint_type": "prefer",
+      "description": "Pattern 'CAST' works well with tables: products, order_items",
+      "weight": 0.5,
+      "tables": [
+        "products",
+        "order_items"
+      ],
+      "pattern": "CAST",
+      "source_feedback_count": 1,
+      "created_at": "2025-12-16T08:09:06.106048",
+      "updated_at": "2025-12-16T08:09:06.106048"
+    },
+    {
+      "id": "a29a2c86-14ad-4a26-bc1b-1505de5a3618",
+      "hint_type": "prefer",
+      "description": "Pattern 'ORDER BY' works well with tables: products, order_items",
+      "weight": 0.5,
+      "tables": [
+        "products",
+        "order_items"
+      ],
+      "pattern": "ORDER BY",
+      "source_feedback_count": 1,
+      "created_at": "2025-12-16T08:09:06.109694",
+      "updated_at": "2025-12-16T08:09:06.109694"
+    },
+    {
+      "id": "bf6a3bd8-296c-4373-b5ff-6e2b826507ba",
+      "hint_type": "prefer",
+      "description": "Pattern 'SUM' works well with tables: products, order_items",
+      "weight": 0.5,
+      "tables": [
+        "products",
+        "order_items"
+      ],
+      "pattern": "SUM",
+      "source_feedback_count": 1,
+      "created_at": "2025-12-16T08:09:06.112710",
+      "updated_at": "2025-12-16T08:09:06.112710"
+    }
+  ],
+  "last_updated": "2025-12-16T08:09:06.112710",
+  "version": 7
+}

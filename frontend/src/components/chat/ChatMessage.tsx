@@ -7,9 +7,10 @@ import type { ChatMessage as ChatMessageType } from '../../types';
 
 interface ChatMessageProps {
     message: ChatMessageType;
+    sessionId?: string;
 }
 
-export function ChatMessage({ message }: ChatMessageProps) {
+export function ChatMessage({ message, sessionId }: ChatMessageProps) {
     const isUser = message.role === 'user';
 
     return (
@@ -26,7 +27,7 @@ export function ChatMessage({ message }: ChatMessageProps) {
                         <p className="text-surface-100">{message.content}</p>
                     </Card>
                 ) : message.response ? (
-                    <QueryResult response={message.response} />
+                    <QueryResult response={message.response} sessionId={sessionId} />
                 ) : (
                     <Card className="bg-surface-800/50">
                         <p className="text-surface-100">{message.content}</p>

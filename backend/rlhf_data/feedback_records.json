@@ -1,0 +1,74 @@
+{
+  "records": [
+    {
+      "id": "62fd1ca1-69d7-418b-86a1-276c68bc8b4e",
+      "message_id": "7503ed41-c10b-42e5-934f-60bc9be589f1",
+      "session_id": "a3a3cb68-cfcf-4638-969e-34b5f95ae278",
+      "question": "Total revenue by product",
+      "sql": "SELECT \n    p.productname,\n    SUM(CAST(oi.quantity AS INT) * CAST(oi.unitprice AS DOUBLE)) AS total_revenue\nFROM order_items oi\nJOIN products p ON oi.productid = p.productid\nGROUP BY p.productname\nORDER BY total_revenue DESC;",
+      "feedback_type": "thumbs_up",
+      "reason": null,
+      "timestamp": "2025-12-16T07:48:50.886470",
+      "metadata": {
+        "tables": [
+          "products",
+          "order_items"
+        ],
+        "patterns": [
+          "GROUP BY",
+          "JOIN",
+          "CAST",
+          "ORDER BY",
+          "SUM"
+        ],
+        "question_length": 24,
+        "sql_length": 226
+      }
+    },
+    {
+      "id": "10eb4ba2-93b2-4474-be78-1aaa76c9efb3",
+      "message_id": "724d18d4-280e-4308-9d64-bfaa03410f7d",
+      "session_id": "835c8ba0-d401-46fa-a462-f67524eb3619",
+      "question": "Show me all products",
+      "sql": "SELECT \n    productid,\n    productname,\n    category,\n    CAST(price AS DOUBLE) AS price,\n    CAST(stockquantity AS INT) AS stock_quantity\nFROM products;",
+      "feedback_type": "thumbs_up",
+      "reason": null,
+      "timestamp": "2025-12-16T07:52:24.542142",
+      "metadata": {
+        "tables": [
+          "products"
+        ],
+        "patterns": [
+          "CAST"
+        ],
+        "question_length": 20,
+        "sql_length": 153
+      }
+    },
+    {
+      "id": "ab44bd7b-1c3d-4d52-88d6-02ecf736bc43",
+      "message_id": "23ef99b0-eaee-470a-9fd7-0775424274d9",
+      "session_id": "e7c506e4-efb2-48e4-9e01-8dbeec2ae5eb",
+      "question": "Total revenue by product",
+      "sql": "SELECT\n    p.productid,\n    p.productname,\n    p.category,\n    SUM(CAST(oi.quantity AS INT) * CAST(oi.unitprice AS DOUBLE)) AS total_revenue\nFROM\n    products p\n    JOIN order_items oi ON p.productid = oi.productid\nGROUP BY\n    p.productid,\n    p.productname,\n    p.category\nORDER BY\n    total_revenue DESC;",
+      "feedback_type": "thumbs_up",
+      "reason": null,
+      "timestamp": "2025-12-16T08:09:06.083440",
+      "metadata": {
+        "tables": [
+          "products",
+          "order_items"
+        ],
+        "patterns": [
+          "GROUP BY",
+          "JOIN",
+          "CAST",
+          "ORDER BY",
+          "SUM"
+        ],
+        "question_length": 24,
+        "sql_length": 307
+      }
+    }
+  ]
+}

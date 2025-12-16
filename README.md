@@ -40,6 +40,12 @@
 - **SSE Streaming**: Server-Sent Events for real-time updates
 - **Transparent Processing**: See schema retrieval, SQL generation, execution
 
+### 👍 Human Feedback (RLHF)
+- **Rate Responses**: Thumbs up/down buttons on every query result
+- **Policy Learning**: System learns from feedback to improve future queries
+- **Transparent Logging**: All feedback stored in JSON for analysis
+- **No Fine-Tuning**: Policy-driven improvement without model retraining
+
 ---
 
 ## 🎬 Demo
@@ -116,6 +122,13 @@ When you ask a question, watch the AI agent think in real-time:
 
 ---
 
+### Human Feedback (RLHF)
+*Rate responses with 👍/👎 to help improve future query generation*
+
+![Feedback Buttons](docs/screenshots/11_feedback_buttons.png)
+
+---
+
 ## 🏗️ Architecture
 
 ```
@@ -157,6 +170,7 @@ When you ask a question, watch the AI agent think in real-time:
 | **Database** | AWS Athena | Query execution |
 | **Vector Store** | FAISS (local) / OpenSearch (prod) | Schema context retrieval |
 | **Embeddings** | AWS Bedrock Titan | Text to vector conversion |
+| **RLHF Store** | JSON (local) / DynamoDB (prod) | Feedback & policy storage |
 
 ---
 
@@ -299,6 +313,10 @@ flowchart TD
     F --> K[Recommend Charts]
     K --> L[Stream Response]
     L --> M[Save to Memory]
+    M --> N[Display Results]
+    N --> O{User Feedback?}
+    O -->|👍/👎| P[Update Policy]
+    P --> Q[Improve Future Queries]
 ```
 
 ---

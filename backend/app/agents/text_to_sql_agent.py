@@ -13,6 +13,7 @@ from app.services.s3_config_loader import get_chatbot_config
 from app.services.bedrock_llm import get_bedrock_service
 from app.services.athena import get_athena_service, AthenaQueryError
 from app.services.s3_client import get_s3_client_service
+from app.services.policy_engine import get_policy_engine
 from app.knowledge.schema_resolver import get_schema_resolver
 from app.utils.sql_utils import validate_sql, sanitize_sql, add_limit_clause
 from app.utils.result_utils import recommend_charts
@@ -89,6 +90,7 @@ class TextToSQLAgent:
         self.athena_service = get_athena_service()
         self.s3_client = get_s3_client_service()
         self.bedrock_service = get_bedrock_service()
+        self.policy_engine = get_policy_engine()
     
     @property
     def config(self):
@@ -136,8 +138,8 @@ class TextToSQLAgent:
         
         return formatted, context
     
-    def _generate_sql(self, question: str, schema_context: str, message_id: str, session_id: str) -> str:
-        """Generate SQL from question and schema, with conversation context."""
+    def _generate_sql(self, question: str, schema_context: str, message_id: str, session_id: str, tables: list = None) -> str:
+        """Generate SQL from question and schema, with conversation context and RLHF policy hints."""
         self._emit_step(message_id, "thinking", "🧠 Analyzing question and generating SQL...")
         
         database = self.config.athena.database
@@ -156,10 +158,19 @@ PREVIOUS CONVERSATION CONTEXT:
 Use this context to understand references like "those", "that data", "the same customers", etc.
 """
 
+        # Get RLHF policy hints
+        policy_section = ""
+        if tables:
+            policy_hints = self.policy_engine.get_policy_hints(question, tables)
+            if policy_hints:
+                self._emit_step(message_id, "policy", f"📋 Applying {len(policy_hints)} learned patterns...")
+                policy_section = self.policy_engine.format_hints_for_prompt(policy_hints)
+
         prompt = f"""Given this database schema:
 
 {schema_context}
 {history_section}
+{policy_section}
 Generate a SQL query for the current question: {question}
 
 CRITICAL RULES:
@@ -175,7 +186,7 @@ Return ONLY the SQL query, no explanations or markdown."""
 
         sql = self.bedrock_service.generate_text(
             prompt,
-            system_prompt=f"You are an expert SQL developer with conversation memory. Generate valid Presto SQL. Use table names directly without any database prefix. Pay attention to conversation context.",
+            system_prompt=f"You are an expert SQL developer with conversation memory. Generate valid Presto SQL. Use table names directly without any database prefix. Pay attention to conversation context and any feedback-based hints provided.",
             temperature=0.1
         )
         
@@ -332,8 +343,11 @@ Provide a 2-3 sentence business summary focusing on key insights."""
             # Step 1: Retrieve schema
             schema_context, context = self._retrieve_schema(request.question, message_id)
             
-            # Step 2: Generate SQL (with conversation memory)
-            current_sql = self._generate_sql(request.question, schema_context, message_id, session_id)
+            # Extract table names for policy hints
+            tables = [t.name for t in context.relevant_tables]
+            
+            # Step 2: Generate SQL (with conversation memory and RLHF policy hints)
+            current_sql = self._generate_sql(request.question, schema_context, message_id, session_id, tables=tables)
             
             # Step 3: Execute with retry loop
             result = None

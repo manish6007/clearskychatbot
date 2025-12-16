@@ -7,7 +7,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.api import chat, schema, history, config
+from app.api import chat, schema, history, config, feedback
 from app.services.s3_config_loader import get_config_loader, get_chatbot_config
 from app.utils.logging_utils import setup_logging
 
@@ -68,6 +68,7 @@ app.include_router(chat.router, prefix="/api")
 app.include_router(schema.router, prefix="/api")
 app.include_router(history.router, prefix="/api")
 app.include_router(config.router, prefix="/api")
+app.include_router(feedback.router, prefix="/api")
 
 
 @app.get("/")

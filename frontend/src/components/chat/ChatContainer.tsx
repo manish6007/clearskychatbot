@@ -11,10 +11,11 @@ interface ChatContainerProps {
     messages: ChatMessageType[];
     loading: boolean;
     thinkingSteps: AgentStep[];
+    sessionId?: string | null;
     onSubmit: (question: string) => void;
 }
 
-export function ChatContainer({ messages, loading, thinkingSteps, onSubmit }: ChatContainerProps) {
+export function ChatContainer({ messages, loading, thinkingSteps, sessionId, onSubmit }: ChatContainerProps) {
     const messagesEndRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -54,7 +55,7 @@ export function ChatContainer({ messages, loading, thinkingSteps, onSubmit }: Ch
                 ) : (
                     <>
                         {messages.map((message) => (
-                            <ChatMessage key={message.id} message={message} />
+                            <ChatMessage key={message.id} message={message} sessionId={sessionId || undefined} />
                         ))}
 
                         {/* Show thinking indicator while loading */}

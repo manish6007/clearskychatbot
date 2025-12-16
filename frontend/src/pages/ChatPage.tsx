@@ -6,7 +6,7 @@ import { useChat } from '../hooks';
 import { useQuestion } from '../contexts';
 
 export function ChatPage() {
-    const { messages, loading, thinkingSteps, submitQuery } = useChat();
+    const { messages, loading, thinkingSteps, sessionId, submitQuery } = useChat();
     const { pendingQuestion, clearPendingQuestion } = useQuestion();
 
     // Handle pending questions from sidebar
@@ -23,6 +23,7 @@ export function ChatPage() {
                 messages={messages}
                 loading={loading}
                 thinkingSteps={thinkingSteps}
+                sessionId={sessionId}
                 onSubmit={submitQuery}
             />
         </div>

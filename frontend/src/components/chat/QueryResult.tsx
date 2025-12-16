@@ -1,17 +1,19 @@
 /** QueryResult component */
 
 import { useState } from 'react';
-import { Download, Code, Clock, AlertCircle } from 'lucide-react';
+import { Download, Clock, AlertCircle } from 'lucide-react';
 import { Card, DataTable, CollapsibleSection, StatusBadge, Button } from '../common';
 import { QuickChartPanel } from '../charts/QuickChartPanel';
 import { ChartSelector } from '../charts/ChartSelector';
+import { FeedbackButtons } from './FeedbackButtons';
 import type { QueryResponse } from '../../types';
 
 interface QueryResultProps {
     response: QueryResponse;
+    sessionId?: string;
 }
 
-export function QueryResult({ response }: QueryResultProps) {
+export function QueryResult({ response, sessionId }: QueryResultProps) {
     const [selectedChartId, setSelectedChartId] = useState<string | null>(
         response.quick_chart?.id || null
     );
@@ -101,6 +103,16 @@ export function QueryResult({ response }: QueryResultProps) {
                         </div>
                     )}
                 </CollapsibleSection>
+            )}
+
+            {/* Feedback */}
+            {response.status === 'completed' && sessionId && (
+                <div className="pt-2 border-t border-surface-700/50">
+                    <FeedbackButtons
+                        messageId={response.message_id}
+                        sessionId={sessionId}
+                    />
+                </div>
             )}
 
             {/* Download link */}
