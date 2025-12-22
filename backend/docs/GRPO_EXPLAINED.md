@@ -1,5 +1,13 @@
 # GRPO: Group Relative Policy Optimization for Text-to-SQL
 
+## Visual Overview
+
+![GRPO Pipeline](images/grpo_pipeline.png)
+
+![GRPO vs RLHF Comparison](images/grpo_vs_rlhf.png)
+
+---
+
 ## Introduction
 
 **GRPO (Group Relative Policy Optimization)** is an advanced reinforcement learning technique that improves AI response quality through comparative learning. Originally introduced by DeepSeek for mathematical reasoning, GRPO is particularly effective for tasks like Text-to-SQL where patterns repeat and feedback is sparse.
@@ -97,6 +105,8 @@ Completion 4: SELECT product_id, COUNT(*) FROM orders (wrong metric)
 ### Step 3: Compute Group-Relative Advantages
 
 This is the **core innovation of GRPO**. Instead of using absolute reward scores, we calculate how each response performs relative to the group average.
+
+![Advantage Calculation](images/grpo_advantage.png)
 
 **The GRPO Formula:**
 
